@@ -1,0 +1,11 @@
+.gradle/
+ZRPages.iml
+ZRPages.ipr
+ZRPages.iws
+build/
+gradlew
+gradlew.bat
+gradle/
+out/
+tags
+cscope.*
