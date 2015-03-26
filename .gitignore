@@ -9,3 +9,5 @@ gradle/
 out/
 tags
 cscope.*
+.idea
+.setting
