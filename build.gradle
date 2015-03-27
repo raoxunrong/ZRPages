@@ -14,9 +14,9 @@ dependencies {
             'org.mockito:mockito-all:1.10.19',
             'com.google.guava:guava:18.0',
             'org.seleniumhq.selenium:selenium-java:2.45.0',
-	    'org.seleniumhq.webdriver:webdriver-common:0.9.7376',
-	    'org.seleniumhq.webdriver:webdriver-support:0.9.7376',
-	    'org.seleniumhq.selenium:selenium-chrome-driver:2.45.0'
+            'org.seleniumhq.webdriver:webdriver-common:0.9.7376',
+            'org.seleniumhq.webdriver:webdriver-support:0.9.7376',
+            'org.seleniumhq.selenium:selenium-chrome-driver:2.45.0'
     )
 
     testCompile(
