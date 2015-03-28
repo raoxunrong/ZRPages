@@ -14,8 +14,12 @@ public class PageTest {
             public String name() {
                 return "fake page name";
             }
-        };
 
+            @Override
+            public String id() {
+                return null;
+            }
+        };
         assertThat(page.name(), is("fake page name"));
     }
 }
