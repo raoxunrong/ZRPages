@@ -2,7 +2,7 @@ package dear.zr.check;
 
 import dear.zr.domain.WordPosition;
 import org.languagetool.JLanguageTool;
-import org.languagetool.language.BritishEnglish;
+import org.languagetool.language.English;
 import org.languagetool.rules.RuleMatch;
 
 import java.io.IOException;
@@ -14,7 +14,12 @@ public class SpellChecker {
     JLanguageTool languageTool;
 
     public SpellChecker() {
-        languageTool = new JLanguageTool(new BritishEnglish());
+
+    }
+
+    public SpellChecker addDict(English english) {
+        languageTool = new JLanguageTool(english);
+        return this;
     }
 
     public void initial() throws IOException {

@@ -4,6 +4,7 @@ import dear.zr.check.SpellChecker;
 import dear.zr.domain.WordPosition;
 import org.junit.Before;
 import org.junit.Test;
+import org.languagetool.language.BritishEnglish;
 
 import java.util.List;
 
@@ -17,18 +18,23 @@ public class SpellCheckerTest {
     @Before
     public void setUp() throws Exception {
         checker = new SpellChecker();
-        checker.initial();
     }
 
     @Test
     public void should_return_the_number_of_error_words() throws Exception {
-        String test = "A sentence with a errer of the Hitchhiker's Guide to the Galaxy";
+        checker.addDict(new BritishEnglish());
+        checker.initial();
+
+        String test = "A sentence with a errer";
         List<WordPosition> errorWords = checker.check(test);
-        assertThat(errorWords.size(), is(3));
+        assertThat(errorWords.size(), is(2));
     }
 
     @Test
     public void should_return_the_positions_of_error_words() throws Exception {
+        checker.addDict(new BritishEnglish());
+        checker.initial();
+
         String test = "A sentence with a errer";
         List<WordPosition> errorWords = checker.check(test);
         assertThat(errorWords.get(0).getStartColumn(), is(17));
@@ -36,4 +42,5 @@ public class SpellCheckerTest {
         assertThat(errorWords.get(1).getStartColumn(), is(19));
         assertThat(errorWords.get(1).getEndColumn(), is(24));
     }
+
 }
