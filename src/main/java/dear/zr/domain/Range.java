@@ -1,12 +1,12 @@
 package dear.zr.domain;
 
-public class WordPosition {
+public class Range {
 
     private int startColumn;
 
     private int endColumn;
 
-    public WordPosition(int startColumn, int endColumn) {
+    public Range(int startColumn, int endColumn) {
         this.startColumn = startColumn;
         this.endColumn = endColumn;
     }
