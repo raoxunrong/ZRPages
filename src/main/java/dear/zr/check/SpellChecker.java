@@ -3,7 +3,9 @@ package dear.zr.check;
 import dear.zr.domain.Range;
 import org.languagetool.JLanguageTool;
 import org.languagetool.Language;
+import org.languagetool.rules.Rule;
 import org.languagetool.rules.RuleMatch;
+import org.languagetool.rules.spelling.morfologik.MorfologikSpellerRule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,21 +25,29 @@ public class SpellChecker {
             languageTool.activateDefaultPatternRules();
         }
 
-//        List<Rule> allRules = languageTool.getAllRules();
-//        for (Rule rule : allRules) {
-//            System.out.println("11111 : " + rule.getId());
-//        }
+        MorfologikSpellerRule spellerRule = getSpellerRule(language);
 
-        //Add new Rule
-//        MorfologikAmericanSpellerRule americanSpellerRule = new MorfologikAmericanSpellerRule(JLanguageTool.getMessageBundle(), language);
-//        languageTool.addRule(americanSpellerRule);
-
-//        List<Rule> allRules2 = languageTool.getAllRules();
-//        for (Rule rule : allRules2) {
-//            System.out.println("22222 : " + rule.getId());
-//        }
+        languageTool.addRule(spellerRule);
 
         return this;
+    }
+
+    private MorfologikSpellerRule getSpellerRule(final Language language) throws IOException {
+        List<Rule> relevantRules = language.getRelevantRules(JLanguageTool.getMessageBundle());
+        final Rule addRule = relevantRules.get(relevantRules.size() - 1);
+
+        //Add new Rule
+        return new MorfologikSpellerRule(JLanguageTool.getMessageBundle(), language) {
+            @Override
+            public String getFileName() {
+                return ((MorfologikSpellerRule) addRule).getFileName();
+            }
+
+            @Override
+            public String getId() {
+                return addRule.getId();
+            }
+        };
     }
 
     public List<Range> check(String str) throws IOException {

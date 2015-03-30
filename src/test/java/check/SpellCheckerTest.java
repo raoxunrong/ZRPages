@@ -62,8 +62,8 @@ public class SpellCheckerTest {
 
         System.out.println(errorWords.get(0).getStartColumn());
         System.out.println(errorWords.get(0).getEndColumn());
-//        System.out.println(errorWords.get(1).getStartColumn());
-//        System.out.println(errorWords.get(1).getEndColumn());
+        System.out.println(errorWords.get(1).getStartColumn());
+        System.out.println(errorWords.get(1).getEndColumn());
     }
 
 }
