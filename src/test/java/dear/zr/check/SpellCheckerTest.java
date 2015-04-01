@@ -1,6 +1,5 @@
-package check;
+package dear.zr.check;
 
-import dear.zr.check.SpellChecker;
 import dear.zr.domain.Range;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +26,6 @@ public class SpellCheckerTest {
 
         String test = "A sentence with a errer";
         List<Range> errorWords = checker.check(test);
-        System.out.println(errorWords.size());
         assertThat(errorWords.size(), is(2));
     }
 
@@ -53,7 +51,20 @@ public class SpellCheckerTest {
     }
 
     @Test
-    public void should_return_the_positions_of_error_words_using_multiple_languages() throws Exception {
+    public void should_remove_duplicate_error_words_using_2_kinds_of_languages() throws Exception {
+        checker.addDict(new BritishEnglish())
+                .addDict(new AmericanEnglish());
+
+        String test = "A sentence with tehv";
+        List<Range> errorWords = checker.check(test);
+
+        assertThat(errorWords.size(), is(1));
+        assertThat(errorWords.get(0).getStartColumn(), is(17));
+        assertThat(errorWords.get(0).getEndColumn(), is(21));
+    }
+
+    @Test
+    public void should_return_the_error_words_using_multiple_languages() throws Exception {
         checker.addDict(new BritishEnglish())
                .addDict(new AmericanEnglish());
 

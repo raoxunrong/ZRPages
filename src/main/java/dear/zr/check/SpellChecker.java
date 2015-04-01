@@ -1,5 +1,6 @@
 package dear.zr.check;
 
+import com.google.common.collect.ImmutableSet;
 import dear.zr.domain.Range;
 import org.languagetool.JLanguageTool;
 import org.languagetool.Language;
@@ -53,13 +54,15 @@ public class SpellChecker {
     public List<Range> check(String str) throws IOException {
 
         List<RuleMatch> matches = languageTool.check(str);
-        List<Range> errorWords = new ArrayList<Range>();
+        List<Range> ranges = new ArrayList<Range>();
 
         for (RuleMatch match : matches) {
-            Range errorWord = new Range(match.getColumn(), match.getEndColumn());
-            errorWords.add(errorWord);
+            Range range = new Range(match.getColumn(), match.getEndColumn());
+            ranges.add(range);
         }
 
-        return errorWords;
+        ImmutableSet<Range> errorWords = ImmutableSet.copyOf(ranges);
+
+        return errorWords.asList();
     }
 }

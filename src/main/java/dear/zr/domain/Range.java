@@ -26,4 +26,25 @@ public class Range {
     public void setEndColumn(int endColumn) {
         this.endColumn = endColumn;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Range)) return false;
+
+        Range range = (Range) o;
+
+        if (endColumn != range.endColumn) return false;
+        if (startColumn != range.startColumn) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = startColumn;
+        result = 31 * result + endColumn;
+        return result;
+    }
 }
