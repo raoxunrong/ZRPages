@@ -6,7 +6,6 @@ import org.languagetool.JLanguageTool;
 import org.languagetool.Language;
 import org.languagetool.rules.Rule;
 import org.languagetool.rules.RuleMatch;
-import org.languagetool.rules.spelling.morfologik.MorfologikSpellerRule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,29 +25,19 @@ public class SpellChecker {
             languageTool.activateDefaultPatternRules();
         }
 
-        MorfologikSpellerRule spellerRule = getSpellerRule(language);
-
+        Rule spellerRule = getSpellerRule(language);
         languageTool.addRule(spellerRule);
 
         return this;
     }
 
-    private MorfologikSpellerRule getSpellerRule(final Language language) throws IOException {
+    private Rule getSpellerRule(final Language language) throws IOException {
+        //Gets the all rules for the language.
         List<Rule> relevantRules = language.getRelevantRules(JLanguageTool.getMessageBundle());
-        final Rule addRule = relevantRules.get(relevantRules.size() - 1);
+        //The last rule is about this language speller rule.
+        Rule spellerRule = relevantRules.get(relevantRules.size() - 1);
 
-        //Add new Rule
-        return new MorfologikSpellerRule(JLanguageTool.getMessageBundle(), language) {
-            @Override
-            public String getFileName() {
-                return ((MorfologikSpellerRule) addRule).getFileName();
-            }
-
-            @Override
-            public String getId() {
-                return addRule.getId();
-            }
-        };
+        return spellerRule;
     }
 
     public List<Range> check(String str) throws IOException {
