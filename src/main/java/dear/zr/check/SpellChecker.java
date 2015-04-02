@@ -1,57 +1,56 @@
 package dear.zr.check;
 
-import com.google.common.collect.ImmutableSet;
 import dear.zr.domain.Range;
 import org.languagetool.JLanguageTool;
 import org.languagetool.Language;
-import org.languagetool.rules.Rule;
 import org.languagetool.rules.RuleMatch;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static dear.zr.utils.ListUtil.findSameElem;
+
 public class SpellChecker {
 
-    JLanguageTool languageTool;
+    private JLanguageTool languageTool;
+    private List<JLanguageTool> languageTools = new ArrayList<>();
 
     public SpellChecker() {
+    }
 
+    public List<JLanguageTool> getLanguageTools() {
+        return languageTools;
     }
 
     public SpellChecker addDict(Language language) throws IOException {
-        if (languageTool == null) {
-            languageTool = new JLanguageTool(language);
-            languageTool.activateDefaultPatternRules();
-        }
 
-        Rule spellerRule = getSpellerRule(language);
-        languageTool.addRule(spellerRule);
+        languageTool = new JLanguageTool(language);
+        languageTool.activateDefaultPatternRules();
+        languageTools.add(languageTool);
 
         return this;
     }
 
-    private Rule getSpellerRule(final Language language) throws IOException {
-        //Gets the all rules for the language.
-        List<Rule> relevantRules = language.getRelevantRules(JLanguageTool.getMessageBundle());
-        //The last rule is about this language speller rule.
-        Rule spellerRule = relevantRules.get(relevantRules.size() - 1);
-
-        return spellerRule;
-    }
-
     public List<Range> check(String str) throws IOException {
 
-        List<RuleMatch> matches = languageTool.check(str);
-        List<Range> ranges = new ArrayList<Range>();
+        List<List<Range>> rangeLists = new ArrayList<>();
+        List<JLanguageTool> languageTools = this.getLanguageTools();
 
-        for (RuleMatch match : matches) {
-            Range range = new Range(match.getColumn(), match.getEndColumn());
-            ranges.add(range);
+        for (JLanguageTool jLanguageTool : languageTools) {
+
+            List<Range> ranges = new ArrayList<>();
+            List<RuleMatch> matches = jLanguageTool.check(str);
+            for (RuleMatch match : matches) {
+                Range range = new Range(match.getColumn(), match.getEndColumn());
+                ranges.add(range);
+            }
+            rangeLists.add(ranges);
         }
 
-        ImmutableSet<Range> errorWords = ImmutableSet.copyOf(ranges);
+        List<Range> errorWords = findSameElem(rangeLists);
 
-        return errorWords.asList();
+        return errorWords;
     }
+
 }

@@ -53,7 +53,7 @@ public class SpellCheckerTest {
     @Test
     public void should_remove_duplicate_error_words_using_2_kinds_of_languages() throws Exception {
         checker.addDict(new BritishEnglish())
-                .addDict(new AmericanEnglish());
+               .addDict(new AmericanEnglish());
 
         String test = "A sentence with tehv";
         List<Range> errorWords = checker.check(test);
@@ -71,10 +71,7 @@ public class SpellCheckerTest {
         String test = "A sentence with color and colour";   // 美式写法 color - colour 英式写法
         List<Range> errorWords = checker.check(test);
 
-        System.out.println(errorWords.get(0).getStartColumn());
-        System.out.println(errorWords.get(0).getEndColumn());
-        System.out.println(errorWords.get(1).getStartColumn());
-        System.out.println(errorWords.get(1).getEndColumn());
+        assertThat(errorWords.size(), is(0));
     }
 
 }
