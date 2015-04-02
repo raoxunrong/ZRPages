@@ -12,10 +12,12 @@ dependencies {
     compile(
             'log4j:log4j:1.2.17',
             'com.google.guava:guava:18.0',
-            'org.seleniumhq.selenium:selenium-java:2.45.0',
-            'org.seleniumhq.webdriver:webdriver-common:0.9.7376',
-//            'org.seleniumhq.webdriver:webdriver-support:0.9.7376',
+
+            'org.seleniumhq.webdriver:webdriver-htmlunit:0.9.7376',
             'org.seleniumhq.selenium:selenium-chrome-driver:2.45.0',
+            'org.seleniumhq.selenium:selenium-firefox-driver:2.45.0',
+            'org.seleniumhq.selenium:selenium-support:2.45.0',
+
             'org.languagetool:language-en:2.8',
             'org.jsoup:jsoup:1.8.1'
     )
