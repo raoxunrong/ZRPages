@@ -13,19 +13,11 @@ import static dear.zr.utils.ListUtil.findSameElem;
 
 public class SpellChecker {
 
-    private JLanguageTool languageTool;
     private List<JLanguageTool> languageTools = new ArrayList<>();
-
-    public SpellChecker() {
-    }
-
-    public List<JLanguageTool> getLanguageTools() {
-        return languageTools;
-    }
 
     public SpellChecker addDict(Language language) throws IOException {
 
-        languageTool = new JLanguageTool(language);
+        JLanguageTool languageTool = new JLanguageTool(language);
         languageTool.activateDefaultPatternRules();
         languageTools.add(languageTool);
 
@@ -35,7 +27,6 @@ public class SpellChecker {
     public List<Range> check(String str) throws IOException {
 
         List<List<Range>> rangeLists = new ArrayList<>();
-        List<JLanguageTool> languageTools = this.getLanguageTools();
 
         for (JLanguageTool jLanguageTool : languageTools) {
 
