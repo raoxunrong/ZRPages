@@ -11,17 +11,22 @@ repositories {
 dependencies {
     compile(
             'log4j:log4j:1.2.17',
-            'org.mockito:mockito-all:1.10.19',
             'com.google.guava:guava:18.0',
             'org.seleniumhq.selenium:selenium-java:2.45.0',
             'org.seleniumhq.webdriver:webdriver-common:0.9.7376',
-            'org.seleniumhq.webdriver:webdriver-support:0.9.7376',
+//            'org.seleniumhq.webdriver:webdriver-support:0.9.7376',
             'org.seleniumhq.selenium:selenium-chrome-driver:2.45.0',
-
-            'org.languagetool:language-en:2.8'
+            'org.languagetool:language-en:2.8',
+            'org.jsoup:jsoup:1.8.1'
     )
 
+    compile('org.seleniumhq.webdriver:webdriver-support:0.9.7376') {
+        exclude group: 'junit'
+        exclude group: 'org.hamcrest'
+    }
+
     testCompile(
-            'junit:junit:4.11'
+            'junit:junit:4.11',
+            'org.mockito:mockito-all:1.10.19'
     )
 }
