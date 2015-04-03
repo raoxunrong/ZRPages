@@ -44,10 +44,10 @@ public class SpellCheckerTest {
 
         String test = "A sentence with a errer";
         List<Range> errorWords = checker.check(test);
-        assertThat(errorWords.get(0).getStartColumn(), is(17));
-        assertThat(errorWords.get(0).getEndColumn(), is(18));
-        assertThat(errorWords.get(1).getStartColumn(), is(19));
-        assertThat(errorWords.get(1).getEndColumn(), is(24));
+        assertThat(errorWords.get(0).getStartColumn(), is(16));
+        assertThat(errorWords.get(0).getEndColumn(), is(17));
+        assertThat(errorWords.get(1).getStartColumn(), is(18));
+        assertThat(errorWords.get(1).getEndColumn(), is(23));
     }
 
     @Test
@@ -59,8 +59,8 @@ public class SpellCheckerTest {
         List<Range> errorWords = checker.check(test);
 
         assertThat(errorWords.size(), is(1));
-        assertThat(errorWords.get(0).getStartColumn(), is(17));
-        assertThat(errorWords.get(0).getEndColumn(), is(21));
+        assertThat(errorWords.get(0).getStartColumn(), is(16));
+        assertThat(errorWords.get(0).getEndColumn(), is(20));
     }
 
     @Test

@@ -35,7 +35,7 @@ public class SpellChecker {
 
             Set<Range> wrongSpellingRanges = new HashSet();
             for (RuleMatch match : jLanguageTool.check(str)) {
-                wrongSpellingRanges.add(new Range(match.getColumn(), match.getEndColumn()));
+                wrongSpellingRanges.add(new Range(match.getColumn() - 1, match.getEndColumn() - 1));
             }
             wrongSpellingRangeList.add(wrongSpellingRanges);
         }
