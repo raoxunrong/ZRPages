@@ -13,7 +13,7 @@ import java.util.List;
 
 public class PageExtractor {
 
-    public static List<TextElement> textNodes(Document document) {
+    public static List<TextElement> textElements(Document document) {
         final List<TextElement> textElements = new LinkedList<>();
 
         new NodeTraversor(new NodeVisitor() {
