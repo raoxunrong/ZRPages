@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static dear.zr.utils.CollectionsUtil.intersection;
 
 public class SpellChecker {
@@ -39,7 +40,7 @@ public class SpellChecker {
             wrongSpellingRangeList.add(wrongSpellingRanges);
         }
 
-        return new ArrayList(intersection(wrongSpellingRangeList.toArray(new Set[0])));
+        return newArrayList(intersection(wrongSpellingRangeList.toArray(new Set[0])));
     }
 
 }
