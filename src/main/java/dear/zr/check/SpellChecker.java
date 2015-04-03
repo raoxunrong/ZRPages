@@ -7,9 +7,11 @@ import org.languagetool.rules.RuleMatch;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import static dear.zr.utils.ListUtil.findSameElem;
+import static dear.zr.utils.CollectionsUtil.intersection;
 
 public class SpellChecker {
 
@@ -26,22 +28,19 @@ public class SpellChecker {
 
     public List<Range> check(String str) throws IOException {
 
-        List<List<Range>> rangeLists = new ArrayList<>();
+        List<Set<Range>> wrongSpellingRangeList = new ArrayList<>();
 
         for (JLanguageTool jLanguageTool : languageTools) {
 
-            List<Range> ranges = new ArrayList<>();
-            List<RuleMatch> matches = jLanguageTool.check(str);
-            for (RuleMatch match : matches) {
+            Set<Range> wrongSpellingRanges = new HashSet();
+            for (RuleMatch match : jLanguageTool.check(str)) {
                 Range range = new Range(match.getColumn(), match.getEndColumn());
-                ranges.add(range);
+                wrongSpellingRanges.add(range);
             }
-            rangeLists.add(ranges);
+            wrongSpellingRangeList.add(wrongSpellingRanges);
         }
 
-        List<Range> errorWords = findSameElem(rangeLists);
-
-        return errorWords;
+        return new ArrayList(intersection(wrongSpellingRangeList.toArray(new Set[0])));
     }
 
 }
