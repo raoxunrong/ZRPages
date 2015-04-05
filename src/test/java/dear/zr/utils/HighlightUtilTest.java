@@ -78,10 +78,11 @@ public class HighlightUtilTest {
     public void should_correct_highlight_word_when_textNode_has_child_note() {
 
         TextElement textElement = mock(TextElement.class);
-        when(textElement.getText()).thenReturn("This is worng ");
+        when(textElement.getText()).thenReturn("Tihs is worng ");
         when(textElement.getCssSelector()).thenReturn("html>body>div");
         when(textElement.getChildNum()).thenReturn(0);
         List<Range> rangeList = new ArrayList<>();
+        rangeList.add(new Range(0, 4));
         rangeList.add(new Range(8, 13));
         when(textElement.getWrongTextRangeList()).thenReturn(rangeList);
 
@@ -125,10 +126,11 @@ public class HighlightUtilTest {
     public void should_correct_highlight_word_when_textNode_has_child_note_and_could_revert() {
 
         TextElement textElement = mock(TextElement.class);
-        when(textElement.getText()).thenReturn("This is worng ");
+        when(textElement.getText()).thenReturn("Tihs is worng ");
         when(textElement.getCssSelector()).thenReturn("html>body>div");
         when(textElement.getChildNum()).thenReturn(0);
         List<Range> rangeList = new ArrayList<>();
+        rangeList.add(new Range(0, 4));
         rangeList.add(new Range(8, 13));
         when(textElement.getWrongTextRangeList()).thenReturn(rangeList);
 
@@ -158,9 +160,10 @@ public class HighlightUtilTest {
 
         List<WebElement> elementList = webDriver.findElements(By.cssSelector(textElement.getCssSelector() + ">" + zrTagName + ">" + zrHighlightTagName));
 
-        assertThat(elementList.size(), is(2));
+        assertThat(elementList.size(), is(3));
         assertThat(elementList.get(0).getAttribute("style"),is("background-color: red;"));
         assertThat(elementList.get(1).getAttribute("style"),is("background-color: red;"));
+        assertThat(elementList.get(2).getAttribute("style"),is("background-color: red;"));
 
         List<WebElement> elementList2 = webDriver.findElements(By.cssSelector(textElement3.getCssSelector() + ">" + zrTagName + ">" + zrHighlightTagName));
         revert(webDriver);

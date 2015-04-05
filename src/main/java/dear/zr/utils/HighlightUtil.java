@@ -9,31 +9,69 @@ import java.util.List;
 
 public class HighlightUtil {
 
-    private static String ZR_TAG_NAME ="zr";
-    private static String HIGHLIGHT_START_TAG ="<zr class='zr_node' style='background-color: red'>";
-    private static String HIGHLIGHT_END_TAG ="</zr>";
+    public static String ZR_TAG_NAME ="zr";
+    public static String HIGHLIGHT_PREFIX_TAG ="<zr class='zr_node' style='background-color: red'>";
+    public static String HIGHLIGHT_POST_TAG ="</zr>";
 
-    public static String insertHighlightTagToText(String text, int start, int end) {
-        return text.substring(0, start) + HIGHLIGHT_START_TAG + text.substring(start, end) + HIGHLIGHT_END_TAG + text.substring(end);
+    public static void highlight(WebDriver webDriver, TextElement textElement) {
+
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
+
+        String findTextNodeJS = "var textNode = " + findNodeJS(textElement.getCssSelector(), textElement.getChildNum());
+
+        String findTextNodeParentJS = "var parent = " + getParentJS("textNode");
+
+        String zrElementContent = zrElementContent(textElement.getText(), textElement.getWrongTextRangeList());
+
+        String getZrHighlightElementCreatorJS = "var zrHighlightElementCreator = " + getElementCreatorJS(ZR_TAG_NAME, zrElementContent);
+
+        String createZrHighlightElementJS = "var zrHighlightElement = zrHighlightElementCreator();";
+
+        String replaceTextNodeWithZrHighlightElementJS = replaceChildJS("parent", textElement.getChildNum(), "zrHighlightElement");
+
+        String js = findTextNodeJS +
+                findTextNodeParentJS +
+                getZrHighlightElementCreatorJS +
+                createZrHighlightElementJS +
+                replaceTextNodeWithZrHighlightElementJS;
+
+        jsExecutor.executeScript(js);
     }
 
-    public static String findNoteByCssSelectorAndChildNumJS(String cssSelector, int childNum) {
+    /**
+     * 必须先处理位置靠后的wrong range
+     */
+    private static String zrElementContent(String text, List<Range> rangeList) {
+        String zrElementContent = text;
+
+        for (int i = rangeList.size()-1; i >= 0; i--) {
+            zrElementContent = insertHighlightTagToText(zrElementContent, rangeList.get(i).getStartColumn(), rangeList.get(i).getEndColumn());
+        }
+
+        return zrElementContent;
+    }
+
+    private static String insertHighlightTagToText(String text, int prefixSeat, int postSeat) {
+        return text.substring(0, prefixSeat) + HIGHLIGHT_PREFIX_TAG + text.substring(prefixSeat, postSeat) + HIGHLIGHT_POST_TAG + text.substring(postSeat);
+    }
+
+    private static String findNodeJS(String cssSelector, int childNum) {
         return "document.querySelector(\'"+ cssSelector +"\').childNodes["+childNum+"];";
     }
 
-    public static String findParentNodeJS(String element) {
+    private static String getParentJS(String element) {
         return element + ".parentNode;";
     }
 
-    public static String replaceTexNodeWithElementNodeJS(String parentNode, int childNum, String newChild) {
-        return parentNode+".replaceChild(" + newChild + ", parent.childNodes["+childNum+"]);";
+    private static String replaceChildJS(String parent, int childNum, String newChild) {
+        return parent+".replaceChild(" + newChild + ", parent.childNodes["+childNum+"]);";
     }
 
-    public static String createElementJS(String tagName) {
+    private static String createElementJS(String tagName) {
         return "document.createElement(\""+ tagName+"\");";
     }
 
-    public static String getElementNodeCreatorJS(String tag, String content) {
+    private static String getElementCreatorJS(String tag, String content) {
         return "function() {" +
                 "var newElement = " + createElementJS(tag) +
                 innerHTMLJS("newElement", content) +
@@ -41,44 +79,7 @@ public class HighlightUtil {
                 "};";
     }
 
-    public static String innerHTMLJS(String element, String data) {
+    private static String innerHTMLJS(String element, String data) {
         return element + ".innerHTML = \"" + data + "\";";
-    }
-
-    /**
-     * text 后方 的range必须在 list的 前方
-     */
-    public static String getHighlightTextNodeContentFormText(String text, List<Range> rangeList) {
-        String zrHighlightElementString = text;
-        for (int i = rangeList.size()-1; i >= 0; i--) {
-            zrHighlightElementString = insertHighlightTagToText(zrHighlightElementString, rangeList.get(i).getStartColumn(), rangeList.get(i).getEndColumn());
-        }
-
-        return zrHighlightElementString;
-    }
-
-    public static void highlight(WebDriver webDriver, TextElement textElement) {
-
-        JavascriptExecutor jse = (JavascriptExecutor) webDriver;
-
-        String findTextNodeJs = "var textNode = " + findNoteByCssSelectorAndChildNumJS(textElement.getCssSelector(), textElement.getChildNum());
-
-        String findTextNodeParentElementJS = "var parent = " + findParentNodeJS("textNode");
-
-        String zrHighlightTextNoteJs = getHighlightTextNodeContentFormText(textElement.getText(), textElement.getWrongTextRangeList());
-
-        String getZrHighlightElementCreatorJs = "var getZrHighlightElementFunction = " + getElementNodeCreatorJS(ZR_TAG_NAME, zrHighlightTextNoteJs);
-
-        String createZrHighlightElementJs = "var newElement = getZrHighlightElementFunction();";
-
-        String replaceTextNodeWithElementNodeJs = replaceTexNodeWithElementNodeJS("parent", textElement.getChildNum(), "newElement");
-
-        String js = findTextNodeJs +
-                findTextNodeParentElementJS +
-                getZrHighlightElementCreatorJs +
-                createZrHighlightElementJs +
-                replaceTextNodeWithElementNodeJs;
-
-        jse.executeScript(js);
     }
 }
