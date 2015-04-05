@@ -11,7 +11,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class HtmlContextTest {
+public class HtmlContentTest {
     @Test
     public void should_generate_js_script(){
         String testString = "A sentence with a errer";
@@ -28,7 +28,7 @@ public class HtmlContextTest {
 
 
 
-        String newText = HtmlContext.addTag(testString, rangeList);
+        String newText = HtmlContent.addTag(testString, rangeList);
         assertThat(newText, is("A sentence with <span style='background-color:red'>a</span> <span style='background-color:red'>errer</span>"));
 
     }
