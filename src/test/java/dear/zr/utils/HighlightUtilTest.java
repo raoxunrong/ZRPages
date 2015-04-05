@@ -20,14 +20,13 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 public class HighlightUtilTest {
 
     private WebDriver webDriver;
     private String zrTagName;
     private String zrHighlightTagName;
 
-    private String testHtmlPath = "/home/habens/Workspaces/ThoughtWorks/Objects/ZRPages/src/test/resources/for_highlight_test.html";
+    private String testHtmlPath = HighlightUtil.class.getResource("/for_highlight_test.html").getPath();
 
     @Before
     public void setUp() {
