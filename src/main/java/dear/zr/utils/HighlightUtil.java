@@ -10,7 +10,7 @@ import java.util.List;
 public class HighlightUtil {
 
     private static String ZR_TAG_NAME ="zr";
-    private static String HIGHLIGHT_START_TAG ="<zr class='zr_node' style='background-color:red'>";
+    private static String HIGHLIGHT_START_TAG ="<zr class='zr_node' style='background-color: red'>";
     private static String HIGHLIGHT_END_TAG ="</zr>";
 
     public static String insertHighlightTagToText(String text, int start, int end) {
