@@ -72,6 +72,12 @@ public class HighlightUtilTest {
         assertThat(elementList.size(), is(2));
         assertThat(elementList.get(0).getText(), is("Tihs"));
         assertThat(elementList.get(1).getText(), is("worng"));
+
+        revert(webDriver);
+
+        List<WebElement> zrElements = webDriver.findElements(By.tagName(zrTagName));
+        assertThat(zrElements.size(), is(0));
+
     }
 
     @Test
@@ -112,14 +118,19 @@ public class HighlightUtilTest {
 
         List<WebElement> elementList = webDriver.findElements(By.cssSelector(textElement.getCssSelector() + ">" + zrTagName + ">" + zrHighlightTagName));
 
-        assertThat(elementList.size(), is(2));
-        assertThat(elementList.get(0).getText(), is("worng"));
-        assertThat(elementList.get(1).getText(), is("tset"));
+        assertThat(elementList.size(), is(3));
+        assertThat(elementList.get(0).getText(), is("Tihs"));
+        assertThat(elementList.get(1).getText(), is("worng"));
 
         List<WebElement> elementList2 = webDriver.findElements(By.cssSelector(textElement3.getCssSelector() + ">" + zrTagName + ">" + zrHighlightTagName));
 
         assertThat(elementList2.size(), is(1));
         assertThat(elementList2.get(0).getText(), is("wordnig"));
+
+        revert(webDriver);
+
+        List<WebElement> zrElements = webDriver.findElements(By.tagName(zrTagName));
+        assertThat(zrElements.size(), is(0));
     }
 
     @Test
@@ -161,14 +172,14 @@ public class HighlightUtilTest {
         List<WebElement> elementList = webDriver.findElements(By.cssSelector(textElement.getCssSelector() + ">" + zrTagName + ">" + zrHighlightTagName));
 
         assertThat(elementList.size(), is(3));
-        assertThat(elementList.get(0).getAttribute("style"),is("background-color: red;"));
-        assertThat(elementList.get(1).getAttribute("style"),is("background-color: red;"));
-        assertThat(elementList.get(2).getAttribute("style"),is("background-color: red;"));
 
         List<WebElement> elementList2 = webDriver.findElements(By.cssSelector(textElement3.getCssSelector() + ">" + zrTagName + ">" + zrHighlightTagName));
-        revert(webDriver);
         assertThat(elementList2.size(), is(1));
-        assertThat(elementList.get(0).getAttribute("style"),is(""));
+
+        revert(webDriver);
+
+        List<WebElement> zrElements = webDriver.findElements(By.tagName(zrTagName));
+        assertThat(zrElements.size(), is(0));
     }
 
     @After
