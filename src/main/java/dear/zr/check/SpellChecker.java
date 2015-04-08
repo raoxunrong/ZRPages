@@ -3,7 +3,9 @@ package dear.zr.check;
 import dear.zr.domain.Range;
 import org.languagetool.JLanguageTool;
 import org.languagetool.Language;
+import org.languagetool.rules.Rule;
 import org.languagetool.rules.RuleMatch;
+import org.languagetool.rules.spelling.morfologik.MorfologikSpellerRule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,8 +29,8 @@ public class SpellChecker {
         return this;
     }
 
-    public List<Range> check(String str) throws IOException {
-
+    public List<Range> check(String str) throws Exception {
+        isLanguageToolInitialized();
         List<Set<Range>> wrongSpellingRangeList = new ArrayList<>();
 
         for (JLanguageTool jLanguageTool : languageTools) {
@@ -41,6 +43,25 @@ public class SpellChecker {
         }
 
         return newArrayList(intersection(wrongSpellingRangeList.toArray(new Set[0])));
+    }
+
+    private void isLanguageToolInitialized() throws Exception {
+        if (languageTools.size() == 0) {
+            throw new Exception("Can't find any initialized language");
+        }
+    }
+
+    public SpellChecker addIgnoreWords(List<String> ignoreWords) throws Exception {
+        isLanguageToolInitialized();
+        JLanguageTool languageTool = languageTools.get(0);
+
+        for (Rule rule : languageTool.getAllRules()) {
+            if (rule.isDictionaryBasedSpellingRule()) {
+                ((MorfologikSpellerRule) rule).addIgnoreTokens(ignoreWords);
+            }
+        }
+
+        return this;
     }
 
 }

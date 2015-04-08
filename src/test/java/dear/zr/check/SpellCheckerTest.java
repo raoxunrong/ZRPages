@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.languagetool.language.AmericanEnglish;
 import org.languagetool.language.BritishEnglish;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -74,4 +75,15 @@ public class SpellCheckerTest {
         assertThat(errorWords.size(), is(0));
     }
 
+    @Test
+    public void should_check_when_add_additional_ignore_words() throws Exception {
+
+        checker.addDict(new BritishEnglish())
+               .addIgnoreWords(Arrays.asList("errorOne", "shannons"));
+
+        String test = "Words errorOne, errorTwo and shannons";
+        List<Range> errorWords = checker.check(test);
+
+        assertThat(errorWords.size(), is(1));
+    }
 }
