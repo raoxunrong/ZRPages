@@ -5,7 +5,7 @@ import dear.zr.domain.TextElement;
 
 import java.util.List;
 
-public class HtmlContext {
+public class HtmlContent {
     public static String prefixTag = "<span style='background-color:red'>";
     public static String postTag = "</span>";
     public static int tagLength = prefixTag.length() + postTag.length();
