@@ -1,5 +1,6 @@
 package dear.zr.check;
 
+import com.google.common.collect.Sets;
 import dear.zr.domain.Range;
 import org.languagetool.JLanguageTool;
 import org.languagetool.Language;
@@ -51,17 +52,17 @@ public class SpellChecker {
         }
     }
 
-    public SpellChecker addIgnoreWords(List<String> ignoreWords) throws Exception {
+    public SpellChecker addIgnoreWords(String ... errorWords) throws Exception {
         isLanguageToolInitialized();
+
         JLanguageTool languageTool = languageTools.get(0);
 
         for (Rule rule : languageTool.getAllRules()) {
             if (rule.isDictionaryBasedSpellingRule()) {
-                ((MorfologikSpellerRule) rule).addIgnoreTokens(ignoreWords);
+                ((MorfologikSpellerRule) rule).addIgnoreTokens(newArrayList(Sets.newHashSet(errorWords)));
             }
         }
 
         return this;
     }
-
 }
