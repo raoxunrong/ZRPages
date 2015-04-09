@@ -48,6 +48,8 @@ public class SpellCheckerTest {
         assertThat(errorWords.get(0).getEndColumn(), is(17));
         assertThat(errorWords.get(1).getStartColumn(), is(18));
         assertThat(errorWords.get(1).getEndColumn(), is(23));
+        assertThat(test.substring(errorWords.get(0).getStartColumn(), errorWords.get(0).getEndColumn()), is("a"));
+        assertThat(test.substring(errorWords.get(1).getStartColumn(), errorWords.get(1).getEndColumn()), is("errer"));
     }
 
     @Test
@@ -61,6 +63,7 @@ public class SpellCheckerTest {
         assertThat(errorWords.size(), is(1));
         assertThat(errorWords.get(0).getStartColumn(), is(16));
         assertThat(errorWords.get(0).getEndColumn(), is(20));
+        assertThat(test.substring(errorWords.get(0).getStartColumn(), errorWords.get(0).getEndColumn()), is("tehv"));
     }
 
     @Test
@@ -86,5 +89,21 @@ public class SpellCheckerTest {
         assertThat(errorWords.size(), is(1));
         assertThat(errorWords.get(0).getStartColumn(), is(6));
         assertThat(errorWords.get(0).getEndColumn(), is(14));
+        assertThat(test.substring(errorWords.get(0).getStartColumn(), errorWords.get(0).getEndColumn()), is("errorOne"));
     }
+
+    @Test
+    public void should_check_with_special_symbols() throws Exception {
+
+        checker.addDict(new BritishEnglish());
+
+        String test = "www/baidu,come0980**common*()!hello.";
+
+        List<Range> errorWords = checker.check(test);
+
+        assertThat(errorWords.size(), is(2));
+        assertThat(test.substring(errorWords.get(0).getStartColumn(), errorWords.get(0).getEndColumn()), is("www"));
+        assertThat(test.substring(errorWords.get(1).getStartColumn(), errorWords.get(1).getEndColumn()), is("baidu"));
+    }
+
 }
